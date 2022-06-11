@@ -1,0 +1,107 @@
+ {% load static %}
+
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TCC</title>
+
+     <link rel="stylesheet" href="{% static 'style/style.css' %}">
+     <link rel="stylesheet" href="{% static 'style/index-style.css' %}">
+
+<!--    <link rel="stylesheet" href="style/style.css">-->
+<!--    <link rel="stylesheet" href="style/index-style.css">-->
+
+</head>
+
+<body>
+    <header>
+        <div class="link-container">
+            <a href="/cadastrar_inversor">Cadastrar Equipamento</a>
+        </div>
+        <div class="link-container">
+            <a href="/equipamentos">Equipamentos</a>
+        </div>
+        <div class="link-container">
+            <a href="/cadastrar_localidade">Cadastrar usina</a>
+        </div>
+        <div class="link-container" id="selected">
+            <a href="/">Usinas</a>
+        </div>
+        <div class="link-container">
+            <a href="/performance">Performance</a>
+        </div>
+
+
+    </header>
+
+    <div class="card-container">
+        <div class="card">
+            <h3 class="card-header">Geração Dia</h3>
+            <div class="card-content">{{producao_dia}} MWh</div>
+        </div>
+        <div class="card">
+            <h3 class="card-header">Geração Mês</h3>
+            <div class="card-content">{{producao_mes}} MWh</div>
+        </div>
+        <div class="card">
+            <h3 class="card-header">Geração Anual</h3>
+            <div class="card-content">{{producao_anual}} MWh</div>
+        </div>
+        <div class="card">
+            <h3 class="card-header">CO2 Atual</h3>
+            <div class="card-content">100 °C</div>
+        </div>
+
+    </div>
+
+
+
+    <div class="content-index">
+        <div class="container-list">
+
+            <h1>Lista de Usinas</h1>
+            <table class="factory-list-table">
+                <tr>
+                    <th>Nome</th>
+                    <th>Cidade</th>
+                    <th>KWh Hoje</th>
+                    <th>KWh Mês</th>
+                    <th>Potência KW</th>
+
+                </tr>
+                {% for usina in usinas %}
+                     <tr onclick="location.href='visualizar-usina/{{usina.id}}'" class="clickable-row">
+                        <td>{{usina.nome}}</td>
+                        <td>{{usina.cidade}}</td>
+                        <td >KW HOJE</td>
+                        <td >KW MÊS</td>
+                        <td class="last">POTENCIA KW</td>
+                    </tr>
+                {% endfor %}
+
+            </table>
+        </div>
+
+        <div class="container-graph">
+
+            <img src="Potencia.png" alt="">
+
+
+        </div>
+
+
+
+
+    </div>
+
+
+
+
+
+</body>
+
+</html>

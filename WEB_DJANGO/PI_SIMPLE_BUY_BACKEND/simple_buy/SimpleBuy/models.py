@@ -32,5 +32,11 @@ class Parametro(models.Model):
     def __str__(self):
         return self.nome
 
+class Leitura_H(models.Model):
+    parametro = models.ForeignKey(Parametro, on_delete=models.CASCADE)
+    valor = models.FloatField()
+    data = models.DateTimeField()
+
+
 
 

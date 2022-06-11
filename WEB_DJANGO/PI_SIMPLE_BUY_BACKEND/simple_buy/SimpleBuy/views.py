@@ -6,18 +6,136 @@ from django.shortcuts import render
 from .dao.GenericDao import GenericDao
 from .dao.DaoParametroInversor import DaoParametroInversor
 from .models import *
-import minimalmodbus
-import matplotlib as mpl
-import matplotlib.pyplot as plt
-import numpy as np
 from asgiref.sync import sync_to_async
 from datetime import datetime
 from.utils.Leitura import Leitura
 import requests
 import json
+import sqlite3
+
+
+
+
+def format_number(num):
+    if num < 10:
+        return '0'+str(num)
+    return str(num)
+
+def get_leituras_by_day(): # retorna um cursor
+    conn = sqlite3.connect(R"C:\Users\T-GAMER\Documents\github\Inversores\WEB_DJANGO\PI_SIMPLE_BUY_BACKEND\simple_buy\db.sqlite3")
+
+    leituras = conn.execute(f"""select valor from SimpleBuy_leitura_h where data >= Datetime('{str(datetime.now().year)}-{format_number(int(datetime.now().month))}-{format_number(int(datetime.now().day))} 00:00:00')  and parametro_id = 21""")
+
+    lista_leituras = []
+
+    for leitura in leituras:
+        lista_leituras.append(leitura[0])
+
+    producao = 0
+    for leitura in lista_leituras:
+        producao += leitura
+    return producao
+
+
+
+def get_leituras_by_month(): # retorna um cursor
+    conn = sqlite3.connect(R"C:\Users\T-GAMER\Documents\github\Inversores\WEB_DJANGO\PI_SIMPLE_BUY_BACKEND\simple_buy\db.sqlite3")
+
+
+    leituras = conn.execute(f"""select valor from SimpleBuy_leitura_h where data >= Datetime('{str(datetime.now().year)}-{format_number(int(datetime.now().month))}-01 00:00:00') and parametro_id = 21                   """)
+    lista_leituras = []
+
+    for leitura in leituras:
+        lista_leituras.append(leitura[0])
+
+    producao = 0
+    for leitura in lista_leituras:
+        producao += leitura
+    return producao
+
+
+
+def get_leituras_by_year(): # retorna um cursor
+    conn = sqlite3.connect(R"C:\Users\T-GAMER\Documents\github\Inversores\WEB_DJANGO\PI_SIMPLE_BUY_BACKEND\simple_buy\db.sqlite3")
+
+    leituras = conn.execute(f"""select valor from SimpleBuy_leitura_h where data >= Datetime('{str(datetime.now().year)}-01-01 00:00:00') and parametro_id = 21                   """)
+    lista_leituras = []
+
+    for leitura in leituras:
+        lista_leituras.append(leitura[0])
+
+    producao = 0
+    for leitura in lista_leituras:
+        producao += leitura
+    return producao
+
 
 
 def index(request):
+
+    dao = GenericDao()
+    usinas = dao.selectAll(Localidade)
+
+    producao_dia = get_leituras_by_day()
+    producao_mes = get_leituras_by_month()
+    producao_anual = get_leituras_by_year()
+
+
+    context = {
+        "usinas": usinas,
+        "producao_dia": producao_dia,
+        "producao_mes": producao_mes,
+        "producao_anual": producao_anual
+
+    }
+
+    return render(request, 'SimpleBuy/index.html', context)
+
+def visualizar_usina(request, id):
+    localidade = ""
+
+    print(id)
+
+    context = {
+        "localidade": localidade
+    }
+    return render(request, 'SimpleBuy/visualizar-usina.html', context)
+
+def equipamentos(request):
+    dao = GenericDao()
+    inversores = dao.selectAll(Inversor)
+
+
+    context = {
+        "inversores": inversores
+    }
+
+    return render(request, 'SimpleBuy/equipamentos.html', context)
+
+
+def visualizar_equipamento(request):
+
+    localidade = ""
+
+    context = {
+        "localidade": localidade
+    }
+    return render(request, 'SimpleBuy/visualizar-equipamento.html', context)
+
+
+def performance(request):
+    localidade = ""
+
+    context = {
+        "localidade": localidade
+    }
+    return render(request, 'SimpleBuy/performance.html', context)
+
+
+
+
+def cadastrar_usina(request):
+
     dao = GenericDao()
     localidade = None
 
@@ -87,9 +205,6 @@ def lista_inversores(request):
 
     inversores = dao.selectAll(Inversor)
 
-    print(inversores)
-
-
     context = {
         "inversores": inversores
     }
@@ -124,7 +239,7 @@ def info_inversor(request, inversor_id, parametro_id=None, att=""):
         delete = True
 
     if att != "":
-        print("ATUALIZANDO LEITURAS")
+
         inversor_id = inversor.endereco_inversor
         time_list = []
         leituras_list = []

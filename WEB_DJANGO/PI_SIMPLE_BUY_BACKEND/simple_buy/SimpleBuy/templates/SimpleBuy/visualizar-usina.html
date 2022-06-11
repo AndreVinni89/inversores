@@ -1,0 +1,131 @@
+ {% load static %}
+
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TCC</title>
+
+     <link rel="stylesheet" href="{% static 'style/style.css' %}">
+     <link rel="stylesheet" href="{% static 'style/usina-style.css' %}">
+
+<!--    <link rel="stylesheet" href="style/style.css">-->
+<!--    <link rel="stylesheet" href="style/usina-style.css">-->
+
+</head>
+
+<body>
+    <!-- {% if localidade %}
+        <a href="/index" class="message-label">
+            <div class="message">
+                <h1>LOCALIZAÇÃO </h1>
+                <h1>CADASTRADA COM SUCESSO!</h1>
+            </div>
+        </a>
+    {% endif %} -->
+
+
+
+
+    <header>
+
+        <div class="link-container">
+            <a href="/cadastrar_inversor">Cadastrar Equipamento</a>
+        </div>
+        <div class="link-container">
+            <a href="/equipamentos">Equipamentos</a>
+        </div>
+        <div class="link-container">
+            <a href="/cadastrar_localidade">Cadastrar usina</a>
+        </div>
+        <div class="link-container" id="selected">
+            <a href="/">Usinas</a>
+        </div>
+        <div class="link-container">
+            <a href="/performance">Performance</a>
+        </div>
+       
+
+    </header>
+
+    <div class="card-container-usina">
+
+        <div class="card-usina">
+            <h3 class="card-header-usina">Nome da Usina</h3>
+            <div class="card-content-usina">CIDADE</div>
+            <div class="card-content-usina">Potencia: 100 KW</div>
+        </div>
+
+        <div class="card-usina">
+            <h3 class="card-header-usina">Geração Hoje</h3>
+            <div class="card-content-usina">100 °C</div>
+        </div>
+        <div class="card-usina">
+            <h3 class="card-header-usina">Geração Mês</h3>
+            <div class="card-content-usina">100 °C</div>
+        </div>
+        <div class="card-usina">
+            <h3 class="card-header-usina">Geração Anual</h3>
+            <div class="card-content-usina">100 °C</div>
+        </div>
+        <div class="card-usina">
+            <h3 class="card-header-usina">Fator de capacidade</h3>
+            <div class="card-content-usina">100 °C</div>
+        </div>
+
+    </div>
+
+
+    <div class="content-usina">
+        <div class="usinas">
+            <h2>Usina</h2>
+            <a href="visualizar-usina.html" class="selected">
+                <h4>Nome Usina</h4>
+            </a>
+            <a href="visualizar-usina.html">
+                <h4>Nome Usina</h4>
+            </a>
+            <a href="visualizar-usina.html">
+                <h4>Nome Usina</h4>
+            </a>
+            <a href="visualizar-usina.html">
+                <h4>Nome Usina</h4>
+            </a>
+            <a href="visualizar-usina.html">
+                <h4>Nome Usina</h4>
+            </a>
+        </div>
+
+
+
+        <div class="graph1">
+            <img src="Potencia.png" alt="">
+
+        </div>
+
+
+
+        <div class="graph2">
+            <img src="Potencia.png" alt="">
+
+
+        </div>
+
+
+
+
+
+    </div>
+
+
+
+
+
+
+
+</body>
+
+</html>

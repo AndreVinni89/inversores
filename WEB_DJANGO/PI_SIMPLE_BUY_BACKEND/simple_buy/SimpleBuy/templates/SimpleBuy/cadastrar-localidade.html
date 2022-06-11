@@ -26,17 +26,29 @@
 
 
     <header>
+        <div class="link-container">
+            <a href="/cadastrar_inversor">Cadastrar Equipamento</a>
+        </div>
+        <div class="link-container">
+            <a href="/equipamentos">Equipamentos</a>
+        </div>
+        <div class="link-container" id="selected">
+            <a href="/cadastrar_localidade">Cadastrar usina</a>
+        </div>
+        <div class="link-container">
+            <a href="/">Usinas</a>
+        </div>
+        <div class="link-container">
+            <a href="/performance">Performance</a>
+        </div>
 
-        <a href="/cadastrar_inversor">Cadastrar Inversor</a>
-        <a href="/lista_inversores">Visualizar inversores</a>
 
     </header>
 
 
-
     <div class="content">
         <div class="container">
-        <h1>Cadastrar localidade</h1>
+        <h1>Cadastrar Usina</h1>
 
             <form method="post" action="/index">
             {% csrf_token %}

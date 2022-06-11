@@ -1,0 +1,72 @@
+/* CARDS */
+
+.card-container-usina{
+
+    display: grid;
+    width: 98vw;
+    height: 10vh;
+    grid-template-columns: 16.5% 1fr 1fr 1fr 1fr;
+    gap: 2%;
+    text-align: center;
+    margin-left: 1%;
+    margin-top: 2vh;
+}
+
+
+.card-usina{
+    border: 1px solid black;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    font-size: 1.3rem;
+}
+
+.card-usina .card-header-usina{
+    text-align: start;
+    padding: 2%;
+    color: #7e7c80;
+    font-size: 1.2rem;
+}
+
+.card-usina .card-content-usina{
+    font-weight: 700;
+    font-size: 1.4rem;
+    color: #2A7AB5;
+}
+
+
+
+.content-usina{
+    display: grid;
+    grid-template-columns: 16.5% 41.5% 41.5%;
+    grid-gap: 1%;
+    margin-top: 2vh;
+    margin-left: 1%;
+    margin-right: 2%;
+    height: 75vh;
+}
+
+
+.graph1{
+    border: 1px solid black;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.graph2{
+    border: 1px solid black;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+img{
+    height: 90%;
+    width: 90%;
+}
+

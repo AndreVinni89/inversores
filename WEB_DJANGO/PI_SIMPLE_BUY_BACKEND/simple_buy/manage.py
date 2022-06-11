@@ -2,10 +2,11 @@
 """Django's command-line utility for administrative tasks."""
 import os
 import sys
-
+import reader
 
 def main():
     """Run administrative tasks."""
+
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'simple_buy_project.settings')
     try:
         from django.core.management import execute_from_command_line
@@ -16,6 +17,8 @@ def main():
             "forget to activate a virtual environment?"
         ) from exc
     execute_from_command_line(sys.argv)
+    # reader.run()
+
 
 
 if __name__ == '__main__':
