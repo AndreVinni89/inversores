@@ -1,0 +1,140 @@
+<!-- {% load static %} -->
+
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TCC</title>
+
+    <!-- <link rel="stylesheet" href="{% static 'style/style.css' %}"> -->
+
+    <link rel="stylesheet" href="style/style.css">
+    <link rel="stylesheet" href="style/visualizar-equipamento-style.css">
+
+</head>
+
+<body>
+    <!-- {% if localidade %}
+        <a href="/index" class="message-label">
+            <div class="message">
+                <h1>LOCALIZAÇÃO </h1>
+                <h1>CADASTRADA COM SUCESSO!</h1>
+            </div>
+        </a>
+    {% endif %} -->
+
+
+
+
+    <header>
+        <div class="link-container">
+            <a href="/cadastrar_inversor">Cadastrar Equipamento</a>
+        </div>
+        <div class="link-container"  id="selected">
+            <a href="/equipamentos.html">Equipamentos</a>
+        </div>
+        <div class="link-container">
+            <a href="/cadastrar_localidade">Cadastrar usina</a>
+        </div>
+        <div class="link-container">
+            <a href="/">Usinas</a>
+        </div>
+        <div class="link-container">
+            <a href="/performance.html">Performance</a>
+        </div>
+    </header>
+
+
+
+    <div class="content-visualizar-equipamento">
+
+        <div class="equipamento">
+            <h2>Equipamentos</h2>
+            <a href="visualizar-equipamento.html" class="selected" >
+                <h4>Equipamento 1</h4>
+            </a>
+            <a href="visualizar-equipamento.html">
+                <h4>Equipamento 2</h4>
+            </a>
+            <a href="visualizar-equipamento.html">
+                <h4>Equipamento 3</h4>
+            </a>
+            <a href="visualizar-equipamento.html">
+                <h4>Equipamento 4</h4>
+            </a>
+            <a href="visualizar-equipamento.html">
+                <h4>Equipamento 5</h4>
+            </a>
+        </div>
+
+
+
+        <div class="card-container-equipamento">
+
+            <div class="card-equipamento">
+                <h3 class="card-header-equipamento">Geração Hoje</h3>
+                <div class="card-content-equipamento">100 C°</div>
+
+            </div>
+            <div class="card-equipamento">
+                <h3 class="card-header-equipamento">Geração Mês</h3>
+                <div class="card-content-equipamento">100 °C</div>
+            </div>
+            <div class="card-equipamento">
+                <h3 class="card-header-equipamento">Horas Hoje</h3>
+                <div class="card-content-equipamento">100 °C</div>
+            </div>
+            <div class="card-equipamento">
+                <h3 class="card-header-equipamento">Frequencia</h3>
+                <div class="card-content-equipamento">100 °C</div>
+            </div>
+            <div class="card-equipamento">
+                <h3 class="card-header-equipamento">Potencia</h3>
+                <div class="card-content-equipamento">100 °C</div>
+            </div>
+        </div>
+    
+        <div class="container-graphs">
+
+            <div class="graph-row-1">
+                <div class="graph">
+                    <img src="Potencia.png" alt="">
+                </div>
+                <div class="graph">
+                    <img src="Potencia.png" alt="">
+                </div>
+            </div>
+
+            <div class="graph-row-2">
+                <div class="graph">
+                    <img src="Potencia.png" alt="">
+                </div>
+                <div class="graph">
+                    <img src="Potencia.png" alt="">
+                </div>
+            </div>
+
+            <div class="alerts">
+                <h1>Alertas</h1>
+
+            </div>
+
+
+
+
+        </div>
+
+
+
+ 
+    </div>
+
+
+
+
+</body>
+
+</html>

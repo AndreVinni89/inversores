@@ -1,0 +1,114 @@
+/* CARDS */
+
+.card-container-usina{
+
+    display: grid;
+    width: 98vw;
+    height: 10vh;
+    grid-template-columns: 16.5% 1fr 1fr 1fr 1fr ;
+    gap: .5%;
+    text-align: center;
+    margin-left: 1%;
+    margin-top: 2vh;
+}
+
+
+.card-usina{
+    border: 1px solid black;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    font-size: 1.3rem;
+}
+
+.card-usina .card-header-usina{
+    text-align: start;
+    padding: 2%;
+    color: #7e7c80;
+    font-size: 1.2rem;
+}
+
+.card-usina .card-content-usina{
+    font-weight: 700;
+    font-size: 1.4rem;
+    color: #2A7AB5;
+}
+
+
+
+.content-usina{
+    display: grid;
+    grid-template-columns: 16.5% 82.5%;
+    grid-gap: 1%;
+    margin-top: .5%;
+    margin-left: 1%;
+    height: 60vh;
+}
+
+.graph-container{
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+    width: 100%;
+    gap: .5%;
+    height: 60%;
+}
+
+
+
+
+.graph-row-1{
+    display: grid;
+    width: 100%;
+    grid-template-columns: 3fr 1fr;
+    gap: .5%;
+}
+
+.graph-row-2{
+    display: grid;
+    width: 100%;
+    grid-template-columns: 3fr 1fr;
+    gap: .5%;
+    height: 80%;
+}
+
+.table{
+    border: 1px solid black;
+    border-radius: 8px;
+}
+
+
+
+
+
+
+
+
+
+
+.graph1{
+    border: 1px solid black;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.graph2{
+    border: 1px solid black;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+
+
+img{
+    height: 50%;
+    width: 50%;
+}
+
+
+

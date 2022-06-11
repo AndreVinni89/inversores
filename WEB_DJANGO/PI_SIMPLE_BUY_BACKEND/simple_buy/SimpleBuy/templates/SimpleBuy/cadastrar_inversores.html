@@ -1,0 +1,81 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TCC</title>
+
+    <link rel="stylesheet" href="{% static 'style/style.css' %}">
+</head>
+
+<body>
+    {% if inversor %}
+        <a href="/index" class="message-label">
+            <div class="message">
+                <h1>INVERSOR</h1>
+                <h1>CADASTRADA COM SUCESSO!</h1>
+            </div>
+        </a>
+    {% endif %}
+    <header>
+
+        <a href="/index">Cadastrar Localidade</a>
+        <a href="/lista_inversores">Visualizar inversores</a>
+
+
+
+
+    </header>
+
+
+
+    <div class="content">
+
+        <div class="container">
+            <h1>Cadastrar Inversor</h1>
+            <form method="post" action="cadastrar_inversor">
+                {% csrf_token %}
+                <div class="container-form">
+                    <div class="input-container">
+                        <span>ID:</span>
+                        <input type="text"  name="endereco_inversor" id="endereco_inversor">
+                    </div>
+
+                    <div class="input-container">
+                        <span>Nome:</span>
+                        <input type="text" name="name" id="name">
+                    </div>
+
+                    <div class="input-container">
+                        <span>Marca:</span>
+                        <input type="text" name="marca" id="marca">
+                    </div>
+                    <div class="input-container">
+                        <span>Localidade:</span>
+                        <select name="localidade" id="localidade">
+                            {% for localidade in localidades %}
+                                <option value={{localidade.id}}>{{localidade.nome}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+
+                    </div>
+
+
+
+                <button type="submit" class="green-button" id="bt-submmit">Avançar</button>
+            </form>
+        </div>
+    </div>
+
+
+
+
+</body>
+
+</html>

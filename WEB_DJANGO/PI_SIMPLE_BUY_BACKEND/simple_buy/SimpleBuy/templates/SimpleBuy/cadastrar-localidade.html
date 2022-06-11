@@ -1,0 +1,97 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TCC</title>
+
+    <link rel="stylesheet" href="{% static 'style/style.css' %}">
+</head>
+
+<body>
+    {% if localidade %}
+        <a href="/index" class="message-label">
+            <div class="message">
+                <h1>LOCALIZAÇÃO </h1>
+                <h1>CADASTRADA COM SUCESSO!</h1>
+            </div>
+        </a>
+    {% endif %}
+
+
+
+
+    <header>
+
+        <a href="/cadastrar_inversor">Cadastrar Inversor</a>
+        <a href="/lista_inversores">Visualizar inversores</a>
+
+    </header>
+
+
+
+    <div class="content">
+        <div class="container">
+        <h1>Cadastrar localidade</h1>
+
+            <form method="post" action="/index">
+            {% csrf_token %}
+                <div class="container-form">
+                    <div class="input-container">
+                        <span>Nome da Usina:</span>
+                        <input type="text" name="name" id="name">
+                    </div>
+
+                    <div class="input-container">
+                        <span>Identificação da unidade:</span>
+                        <input type="text" name="identificacao" id="identificacao">
+                    </div>
+
+                    <div class="input-container">
+                        <span>Endereço:</span>
+                        <input type="text" name="endereco" id="endereco">
+                    </div>
+
+                    <div class="input-container">
+                        <span>Bairro:</span>
+                        <input type="text" name="bairro" id="bairro">
+                    </div>
+
+                    <div class="input-container">
+                        <span>Cidade:</span>
+                        <input type="text" name="cidade" id="cidade">
+                    </div>
+
+                    <div class="input-container">
+                        <span>Estado: </span>
+                        <input type="text" name="estado" id="estado">
+                    </div>
+
+                    <div class="input-container">
+                        <span>CEP:</span>
+                        <input type="text" name="cep" id="cep">
+                    </div>
+
+                    <div class="input-container">
+                        <span>Email: </span>
+                        <input type="text" name="email" id="email">
+                    </div>
+                </div>
+
+                <button type="submit" class="green-button" id="bt-submmit">Cadastrar</button>
+            </form>
+
+        </div>
+    </div>
+
+
+
+
+
+</body>
+
+</html>

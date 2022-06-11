@@ -1,0 +1,161 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TCC</title>
+    <link rel="stylesheet" href="{% static 'style/style.css' %}">
+</head>
+
+<body>
+
+    {% if delete %}
+        <a href="/info-inversor/{{inversor.id}}" class="message-label">
+            <div class="message">
+                <h1>PARAMETRO</h1>
+                <h1>REMOVIDO COM SUCESSO!</h1>
+            </div>
+        </a>
+    {% endif %}
+
+    {% if att %}
+    <a href="/info-inversor/{{inversor.id}}" class="message-label">
+        <div class="message">
+            <h1>LEITURAS</h1>
+            <h1>ATUALIZADO COM SUCESSO!</h1>
+        </div>
+    </a>
+    {% endif %}
+
+
+
+    <header>
+        <a href="/index">Cadastrar Localidade</a>
+        <a href="/cadastrar_inversor">Cadastrar inversor</a>
+    </header>
+
+    <div class="content">
+
+        <div class="container" id="parameters_container">
+            <h1>Inversor - {{inversor.nome}}</h1>
+            
+            <h2>Local: {{inversor.local_id.nome}}</h2>
+            <h2>Endereço: {{inversor.local_id.endereco}}</h2>
+
+            <h2>Inversor ID: {{inversor.id}}</h2>
+            <h2>Inversor nome: {{inversor.nome}}</h2>
+            <br><br><br>
+            <table>
+                <tr>
+                    <th>ID</th>
+                    <th>Nome</th>
+                    <th>Endereço Parametro</th>
+                    <th>Leitura</th>
+                    <th>Excluir</th>
+
+                </tr>
+                {% for parametro in parametros %}
+                    <tr>
+                        <td>{{parametro.id}}</td>
+                        <td>{{parametro.nome}}</td>
+                        <td>{{parametro.endereco}}</td>
+                        <td>{{parametro.leitura_media}}</td>
+                        <td><a href="/info-inversor/{{inversor.id}}/{{parametro.id}}/excluir"><button class="generic-button">Excluir</button></a></td>
+                    </tr>
+                {% endfor %}
+
+
+
+            </table>
+            <br><br><br><br><br><br>
+
+
+            <a href="/info-inversor/{{inversor.id}}/atualizar"><button class="green-button">Atualizar</button></a>
+        </div>
+
+
+        
+        <div class="container" id="graphs">
+            <h1>Gráficos</h1>
+            <div class="graphContainer">
+
+
+                <!-- {% for parametro in parametros %}
+
+                    <div class="graph">
+                        <h1>{{parametro.nome}}</h1>
+                        {% with 'img/'|add:parametro.nome|add:'.png' as image_static %}  
+                        <img src="{% static image_static %} " alt="" >
+                        {% endwith %}
+                    </div>
+
+                {% endfor %} -->
+                <div class="graph">
+                    <h1>Tensão</h1>
+                    <img src="{% static 'img/Tensao_x_x.png' %} " alt="" >
+                </div>
+
+                <div class="graph">
+                    <h1>Tensão Simples</h1>
+                    <img src="{% static 'img/Tensao_simples.png' %} " alt="" >
+                </div>
+
+                <div class="graph">
+                    <h1>Potencia</h1>
+                    <img src="{% static 'img/Potencia.png' %} " alt="" >
+                </div>
+
+
+
+            </div>
+            
+        </div>
+
+
+        <div class="container">
+            <h1>CADASTRAR PARAMETROS</h1>
+            <br><br><br>
+            <form method="post" action="/info-inversor/{{inversor.id}}">
+            {% csrf_token %}
+            <div class="container-form">
+                <div class="parametros">
+                    <div class="input-container">
+                        <span>Nome Parametro:</span>
+                        <input type="text" name="name-parametro" id="name-parametro">
+                    </div>
+
+                    <div class="input-container">
+                        <span>Endereço Parametro:</span>
+                        <input type="text" name="endereco-parametro" id="endereco-parametro">
+                    </div>
+                    <div class="input-container">
+                        <span>Id inversor:</span>
+                        <input type="text" disabled name="id-inversor" id="id-inversor" value={{inversor.id}}>
+                    </div>
+
+
+                    </div>
+                </div>
+
+                <button type="submit" class="green-button" id="bt-submmit">Adicionar Parâmetro</button>
+            </form>
+
+
+
+        </div>
+
+
+
+
+
+
+
+
+    </div>
+</body>
+
+</html>

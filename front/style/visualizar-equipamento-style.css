@@ -1,0 +1,133 @@
+.equipamento{
+    border: 1px solid black;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+
+    background-color: rgb(46, 46, 46);
+    color: white;
+    padding: 4%;
+
+}
+
+.equipamento h2{
+    border-bottom: 1px solid black;
+ }
+ 
+ 
+ 
+ .equipamento a.selected{
+     color: black;
+     background-color: white;
+ }
+ 
+ .equipamento a{
+     padding-left: 5%;
+     display: flex;
+     align-items: center;
+     justify-content: flex-start;
+     width: 95%;
+     height: 4%;
+     color: white;
+     text-decoration: none;
+     border-bottom: 1px solid black;
+     border-radius: 6px;
+     margin-top: 4%;
+ 
+ }
+ 
+ .equipamento a:hover{
+     background-color: rgba(0, 0, 0, 0.493);
+ }
+
+ 
+.content-visualizar-equipamento{
+    display: grid;
+    grid-template-columns: 16.5% 16.5% 66%;
+    grid-gap: 1%;
+    margin-top: 2vh;
+    margin-left: 1%;
+    margin-right: 2%;
+    height: 90vh;
+}
+
+.card-container-equipamento{
+
+    display: grid;
+
+    width: 100%;   
+    height: 100%;
+    grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
+    gap: 2%;
+    text-align: center;
+
+}
+
+
+.card-equipamento{
+    height: 100%;
+    width: 100%;
+    border: 1px solid black;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+
+    font-size: 1.3rem;
+}
+
+.card-equipamento .card-header-equipamento{
+    text-align: start;
+
+    padding: 2%;
+    color: #7e7c80;
+    font-size: 1.2rem;
+}
+
+.card-equipamento .card-content-equipamento{
+  
+    font-weight: 700;
+    font-size: 1.4rem;
+    color: #2A7AB5;
+
+}
+
+.container-graphs{
+    display: grid;
+    grid-template-rows: 2fr 2fr 1fr;
+    gap: 1%;
+}
+
+.graph-row-1{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1%;
+}
+
+.graph-row-2{
+
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1%;
+}
+
+
+.graph{
+    border: 1px solid black;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+img{
+    height: 70%;
+    width: 80%;
+}
+
+.alerts{
+    border: 1px solid black;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+}

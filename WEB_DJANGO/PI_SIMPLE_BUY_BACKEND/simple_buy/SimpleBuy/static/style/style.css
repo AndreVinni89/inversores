@@ -1,0 +1,265 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+
+.content{
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.container{
+    border-radius:10px;
+
+    margin-top: 20vh;
+    height: 550px;
+    width: 90vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    align-self: center;
+    border: 1px solid black;
+}
+
+header{
+    height: 10vh;
+    background-color: black;
+    color: white;
+
+    display: flex;
+    text-align: center;
+    justify-content: space-around;
+    align-items: center;
+    color: white;
+
+    font-size: 1.3rem;
+
+
+    
+
+}
+
+header a{
+    text-decoration: none;
+
+}
+
+header a{
+    color: white;
+
+}
+
+table{
+    width: 90%;
+  
+    border: 1px solid black;
+    border-radius: 8px;
+
+    -webkit-box-shadow: 10px 10px 11px 0px rgba(0,0,0,0.75);
+    -moz-box-shadow: 10px 10px 11px 0px rgba(0,0,0,0.75);
+    box-shadow: 10px 10px 11px 0px rgba(0,0,0,0.75);
+}
+
+th{
+    font-size: 1.3rem;
+}
+
+tr{
+    height: 5vh;
+    border-bottom: 1px solid black;
+}
+
+td{
+    border-top: 1px solid black;
+    border-right: 1px solid black;
+    text-align: center;
+    
+}
+
+td.last{
+    border-right: 0px solid black;
+}
+
+.confirm-button{
+    height: 4.5vh;
+    width: 90%;
+    border: none;
+
+    border-radius: 8px;
+    font-size: 1.2rem;
+    background-color: white;
+    border: 1px solid black;
+    color: black;
+    transition: .4s;
+
+}
+
+
+form{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.container-form{
+
+    width: 80%;
+    margin: auto;
+    display: grid;
+    grid-template-columns: 50% 50%;
+
+    column-gap: 30px;
+    row-gap: 20px;
+}
+
+.container-form .input-container{
+    display: flex;
+    flex-direction: column;
+
+}
+.container-form .input-container input{
+    width: 100%;
+    height: 25px;
+    border-radius: 10px;
+}
+
+
+.container-form .input-container select{
+    width: 102%;
+    height: 30px;
+    border-radius: 10px;
+}
+
+
+.green-button{
+    height: 8vh;
+    width: 15vw;
+    border: none;
+    background-color: rgb(2, 207, 2);
+    color: white;
+    border-radius: 8px;
+    font-size: 1.2rem;
+    transition: .5s;
+
+
+}
+
+.green-button:hover{
+
+    background-color: rgba(2, 207, 2, 0.644);
+
+}
+
+.green-button a{
+    text-decoration: none;
+    color: white;
+}
+
+.parametros{
+    display:grid;
+    grid-template-columns: 24% 25% 18% 24%;
+    gap:2%;
+}
+
+
+
+.button{
+    height: 4rem;
+    width: 10rem;
+    background-color: rgb(48, 48, 48);
+    color: white;
+    border: 0;
+    border-radius: .7rem;
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+
+
+}
+
+
+.message-label{
+    height:100%;
+    width:100%;
+    background-color: rgba(0, 0, 0, 0.76);
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+}
+
+.message{
+    background-color: rgb(0, 0, 0);
+    height: 30%;
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    color: white;
+    text-align: center;
+
+
+}
+
+
+.generic-button{
+    height: 4.5vh;
+    width: 90%;
+    border: none;
+
+    border-radius: 8px;
+    font-size: 1.2rem;
+    background-color: white;
+    border: 1px solid black;
+    color: black;
+    transition: .4s;
+
+}
+
+.generic-button:hover{
+    background-color: black;
+    color: white;
+    border: 1px solid white;
+
+}
+
+#graphs{
+    height: 1000px;
+}
+
+.graphContainer{
+    width: 80%;
+    
+    display: grid;
+    grid-template-columns: 40% 40%;
+    column-gap: 10%;
+}
+
+
+.graphContainer .graph{
+    height: 24rem;
+    width: 100%;
+    border: 1px solid black;
+    text-align: center;
+
+}
+
+.graphContainer .graph img{
+    height: 85%;
+    width: 100%;
+}
+
+
+#parameters_container{
+    height: 1400px;
+}
