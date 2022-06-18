@@ -23,7 +23,7 @@
             <a href="/cadastrar_inversor">Cadastrar Equipamento</a>
         </div>
         <div class="link-container">
-            <a href="/equipamentos">Equipamentos</a>
+            <a href="/equipamentos/1">Equipamentos</a>
         </div>
         <div class="link-container">
             <a href="/cadastrar_localidade">Cadastrar usina</a>
@@ -41,19 +41,19 @@
     <div class="card-container">
         <div class="card">
             <h3 class="card-header">Geração Dia</h3>
-            <div class="card-content">{{producao_dia}} MWh</div>
+            <div class="card-content">{{totalDia}}</div>
         </div>
         <div class="card">
             <h3 class="card-header">Geração Mês</h3>
-            <div class="card-content">{{producao_mes}} MWh</div>
+            <div class="card-content">{{totalMes}}</div>
         </div>
         <div class="card">
             <h3 class="card-header">Geração Anual</h3>
-            <div class="card-content">{{producao_anual}} MWh</div>
+            <div class="card-content">{{totalAno}}</div>
         </div>
         <div class="card">
             <h3 class="card-header">CO2 Atual</h3>
-            <div class="card-content">100 °C</div>
+            <div class="card-content">{{co2}}</div>
         </div>
 
     </div>
@@ -74,13 +74,13 @@
 
                 </tr>
                 {% for usina in usinas %}
-                     <tr onclick="location.href='visualizar-usina/{{usina.id}}'" class="clickable-row">
-                        <td>{{usina.nome}}</td>
-                        <td>{{usina.cidade}}</td>
-                        <td >KW HOJE</td>
-                        <td >KW MÊS</td>
-                        <td class="last">POTENCIA KW</td>
-                    </tr>
+                         <tr onclick="location.href='visualizar-usina/{{usina.usina_id}}'" class="clickable-row">
+                            <td>{{usina.usina_nome}}</td>
+                            <td>{{usina.usina_local}}</td>
+                             <td >{{usina.dia}}</td>
+                            <td >{{usina.mes}}</td>
+                            <td class="last">{{usina.potencia}}</td>
+                        </tr>
                 {% endfor %}
 
             </table>

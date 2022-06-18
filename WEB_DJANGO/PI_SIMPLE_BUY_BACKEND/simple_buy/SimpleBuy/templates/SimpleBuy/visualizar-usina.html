@@ -36,7 +36,7 @@
             <a href="/cadastrar_inversor">Cadastrar Equipamento</a>
         </div>
         <div class="link-container">
-            <a href="/equipamentos">Equipamentos</a>
+            <a href="/equipamentos/1">Equipamentos</a>
         </div>
         <div class="link-container">
             <a href="/cadastrar_localidade">Cadastrar usina</a>
@@ -54,26 +54,26 @@
     <div class="card-container-usina">
 
         <div class="card-usina">
-            <h3 class="card-header-usina">Nome da Usina</h3>
-            <div class="card-content-usina">CIDADE</div>
-            <div class="card-content-usina">Potencia: 100 KW</div>
+            <h3 class="card-header-usina">{{usina.nome}}</h3>
+            <div class="card-content-usina">{{usina.cidade}}</div>
+            <div class="card-content-usina">Potencia: {{potencia}}</div>
         </div>
 
         <div class="card-usina">
             <h3 class="card-header-usina">Geração Hoje</h3>
-            <div class="card-content-usina">100 °C</div>
+            <div class="card-content-usina">{{totalDia}}</div>
         </div>
         <div class="card-usina">
             <h3 class="card-header-usina">Geração Mês</h3>
-            <div class="card-content-usina">100 °C</div>
+            <div class="card-content-usina">{{totalMes}}</div>
         </div>
         <div class="card-usina">
             <h3 class="card-header-usina">Geração Anual</h3>
-            <div class="card-content-usina">100 °C</div>
+            <div class="card-content-usina">{{totalAno}}</div>
         </div>
         <div class="card-usina">
             <h3 class="card-header-usina">Fator de capacidade</h3>
-            <div class="card-content-usina">100 °C</div>
+            <div class="card-content-usina">WIP</div>
         </div>
 
     </div>
@@ -81,22 +81,24 @@
 
     <div class="content-usina">
         <div class="usinas">
-            <h2>Usina</h2>
-            <a href="visualizar-usina.html" class="selected">
-                <h4>Nome Usina</h4>
-            </a>
-            <a href="visualizar-usina.html">
-                <h4>Nome Usina</h4>
-            </a>
-            <a href="visualizar-usina.html">
-                <h4>Nome Usina</h4>
-            </a>
-            <a href="visualizar-usina.html">
-                <h4>Nome Usina</h4>
-            </a>
-            <a href="visualizar-usina.html">
-                <h4>Nome Usina</h4>
-            </a>
+            <h2>Usinas</h2>
+
+            {% for usina in usinas %}
+
+                {% if usina.selected %}
+                    <a onclick="location.href='/visualizar-usina/{{usina.id}}'" class="selected">
+                        <h4>{{usina.nome}}</h4>
+                    </a>
+
+                {% else %}
+                    <a onclick="location.href='/visualizar-usina/{{usina.id}}'" >
+                        <h4>{{usina.nome}}</h4>
+                    </a>
+
+                {% endif %}
+            {% endfor %}
+
+
         </div>
 
 

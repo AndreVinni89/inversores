@@ -14,7 +14,7 @@
 
 <body>
     {% if localidade %}
-        <a href="/index" class="message-label">
+        <a href="/cadastrar_localidade" class="message-label">
             <div class="message">
                 <h1>LOCALIZAÇÃO </h1>
                 <h1>CADASTRADA COM SUCESSO!</h1>
@@ -30,7 +30,7 @@
             <a href="/cadastrar_inversor">Cadastrar Equipamento</a>
         </div>
         <div class="link-container">
-            <a href="/equipamentos">Equipamentos</a>
+            <a href="/equipamentos/1">Equipamentos</a>
         </div>
         <div class="link-container" id="selected">
             <a href="/cadastrar_localidade">Cadastrar usina</a>
@@ -50,7 +50,7 @@
         <div class="container">
         <h1>Cadastrar Usina</h1>
 
-            <form method="post" action="/index">
+            <form method="post" action="/cadastrar_localidade">
             {% csrf_token %}
                 <div class="container-form">
                     <div class="input-container">

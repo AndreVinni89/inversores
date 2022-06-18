@@ -14,111 +14,260 @@ import json
 import sqlite3
 
 
-
+localDB = R"C:\Users\T-GAMER\Documents\github\Inversores\WEB_DJANGO\PI_SIMPLE_BUY_BACKEND\simple_buy\db.sqlite3"
 
 def format_number(num):
     if num < 10:
         return '0'+str(num)
     return str(num)
 
-def get_leituras_by_day(): # retorna um cursor
-    conn = sqlite3.connect(R"C:\Users\T-GAMER\Documents\github\Inversores\WEB_DJANGO\PI_SIMPLE_BUY_BACKEND\simple_buy\db.sqlite3")
-
-    leituras = conn.execute(f"""select valor from SimpleBuy_leitura_h where data >= Datetime('{str(datetime.now().year)}-{format_number(int(datetime.now().month))}-{format_number(int(datetime.now().day))} 00:00:00')  and parametro_id = 21""")
-
-    lista_leituras = []
-
-    for leitura in leituras:
-        lista_leituras.append(leitura[0])
-
-    producao = 0
-    for leitura in lista_leituras:
-        producao += leitura
-    return producao
 
 
+class usinaDTO:
+    def __init__(self, usina_nome, usina_id, potencia, local, dia, mes, ano):
+        self.usina_nome = usina_nome
+        self.usina_id = usina_id
+        self.usina_local = local
+        self.dia = dia
+        self.mes = mes
+        self.ano = ano
+        self.potencia = potencia
 
-def get_leituras_by_month(): # retorna um cursor
-    conn = sqlite3.connect(R"C:\Users\T-GAMER\Documents\github\Inversores\WEB_DJANGO\PI_SIMPLE_BUY_BACKEND\simple_buy\db.sqlite3")
-
-
-    leituras = conn.execute(f"""select valor from SimpleBuy_leitura_h where data >= Datetime('{str(datetime.now().year)}-{format_number(int(datetime.now().month))}-01 00:00:00') and parametro_id = 21                   """)
-    lista_leituras = []
-
-    for leitura in leituras:
-        lista_leituras.append(leitura[0])
-
-    producao = 0
-    for leitura in lista_leituras:
-        producao += leitura
-    return producao
-
-
-
-def get_leituras_by_year(): # retorna um cursor
-    conn = sqlite3.connect(R"C:\Users\T-GAMER\Documents\github\Inversores\WEB_DJANGO\PI_SIMPLE_BUY_BACKEND\simple_buy\db.sqlite3")
-
-    leituras = conn.execute(f"""select valor from SimpleBuy_leitura_h where data >= Datetime('{str(datetime.now().year)}-01-01 00:00:00') and parametro_id = 21                   """)
-    lista_leituras = []
-
-    for leitura in leituras:
-        lista_leituras.append(leitura[0])
-
-    producao = 0
-    for leitura in lista_leituras:
-        producao += leitura
-    return producao
+class InversorDTO:
+    def __init__(self, inversor_nome, inversor_id, inversor_marca, potencia,dia, mes, ano, total):
+        self.nome = inversor_nome
+        self.id = inversor_id
+        self.marca = inversor_marca
+        self.dia = dia
+        self.mes = mes
+        self.ano = ano
+        self.total = total
+        self.potencia = potencia
 
 
 
 def index(request):
 
     dao = GenericDao()
+    daoParameter = DaoParametroInversor()
     usinas = dao.selectAll(Localidade)
 
-    producao_dia = get_leituras_by_day()
-    producao_mes = get_leituras_by_month()
-    producao_anual = get_leituras_by_year()
+    totalDia = 0
+    totalMes = 0
+    totalAno = 0
 
+
+
+    usinasDados = []
+
+    for usina in usinas:
+        somaDia = 0
+        somaMes = 0
+        somaAno = 0
+        somaTotal = 0
+        somaPotencia = 0
+
+
+        inversores = dao.get_inversores_by_usina(Inversor, usina)
+        for inversor in inversores:
+            parametros = daoParameter.get_parameters_by_inversor(inversor)
+
+            for par in parametros:
+                if 'potencia' in par.nome:
+                    somaPotencia += dao.get_last_leitura_by_param(Leitura_H, par.id).valor
+                if 'geracao_dia' in par.nome:
+                    somaDia += dao.get_last_leitura_by_param(Leitura_H, par.id).valor
+                if 'geracao_mes' in par.nome:
+                    somaMes += dao.get_last_leitura_by_param(Leitura_H, par.id).valor
+                if 'geracao_ano' in par.nome:
+                    somaAno += dao.get_last_leitura_by_param(Leitura_H, par.id).valor
+
+        usinasDados.append(usinaDTO(usina.nome, usina.id, somaPotencia, usina.cidade, somaDia, somaMes, somaAno))
+        totalAno += somaAno
+        totalMes += somaMes
+        totalDia += somaDia
+
+    co2 = (totalMes * 12) * 0.57
 
     context = {
-        "usinas": usinas,
-        "producao_dia": producao_dia,
-        "producao_mes": producao_mes,
-        "producao_anual": producao_anual
-
+        "usinas": usinasDados,
+        "totalDia": totalDia,
+        "totalMes": totalMes,
+        "totalAno": totalAno,
+        "co2": co2
     }
 
     return render(request, 'SimpleBuy/index.html', context)
 
 def visualizar_usina(request, id):
-    localidade = ""
+    dao = GenericDao()
+    daoParameter = DaoParametroInversor()
 
-    print(id)
+
+    usinas = dao.selectAll(Localidade)
+
+    for u in usinas:
+        if str(u.id) == id:
+            u.selected = True
+            break
+
+    usina = dao.get(Localidade, id)
+
+    somaDia = 0
+    somaMes = 0
+    somaAno = 0
+    somaPotencia = 0
+
+    inversores = dao.get_inversores_by_usina(Inversor, usina)
+    for inversor in inversores:
+        parametros = daoParameter.get_parameters_by_inversor(inversor)
+
+        for par in parametros:
+            if 'potencia' in par.nome:
+                somaPotencia += dao.get_last_leitura_by_param(Leitura_H, par.id).valor
+            if 'geracao_dia' in par.nome:
+                somaDia += dao.get_last_leitura_by_param(Leitura_H, par.id).valor
+            if 'geracao_mes' in par.nome:
+                somaMes += dao.get_last_leitura_by_param(Leitura_H, par.id).valor
+            if 'geracao_ano' in par.nome:
+                somaAno += dao.get_last_leitura_by_param(Leitura_H, par.id).valor
 
     context = {
-        "localidade": localidade
+        "usinas": usinas,
+        "usina": usina,
+        "totalDia": somaDia,
+        "totalMes": somaMes,
+        "totalAno": somaAno,
+        "potencia": somaPotencia
     }
+
+
     return render(request, 'SimpleBuy/visualizar-usina.html', context)
 
-def equipamentos(request):
+def equipamentos(request, id=1):
     dao = GenericDao()
-    inversores = dao.selectAll(Inversor)
+    daoParameter = DaoParametroInversor()
+
+    usina = dao.get(Localidade, id)
+    usinas = dao.selectAll(Localidade)
+
+
+    for u in usinas:
+        if str(u.id) == id:
+            u.selected = True
+            break
+
+    somaDia = 0
+    somaMes = 0
+    somaAno = 0
+    somaPotencia = 0
+
+    inversores = dao.get_inversores_by_usina(Inversor, usina)
+    inversoresData = []
+    for inversor in inversores:
+        parametros = daoParameter.get_parameters_by_inversor(inversor)
+
+        valorDia = 0
+        valorMes = 0
+        valorAno = 0
+        valorPotencia = 0
+        valorTotal = 0
+
+        for par in parametros:
+            if 'potencia' in par.nome:
+                valorPotencia += dao.get_last_leitura_by_param(Leitura_H, par.id).valor
+            if 'geracao_dia' in par.nome:
+                valorDia += dao.get_last_leitura_by_param(Leitura_H, par.id).valor
+            if 'geracao_mes' in par.nome:
+                valorMes += dao.get_last_leitura_by_param(Leitura_H, par.id).valor
+            if 'geracao_ano' in par.nome:
+                valorAno += dao.get_last_leitura_by_param(Leitura_H, par.id).valor
+            if 'geracao_total' in par.nome:
+                valorTotal += dao.get_last_leitura_by_param(Leitura_H, par.id).valor
+
+
+        inversoresData.append(InversorDTO(inversor.nome, inversor.id, inversor.marca, valorPotencia, valorDia, valorMes, valorAno, valorTotal))
+
+
+        somaDia = valorDia
+        somaMes = valorMes
+        somaAno = valorAno
+        somaPotencia = valorPotencia
+
+
+    co2 = (somaMes * 12) * 0.57
 
 
     context = {
-        "inversores": inversores
+        "usinas": usinas,
+        "usina": usina,
+        "totalDia": somaDia,
+        "totalMes": somaMes,
+        "totalAno": somaAno,
+        "potencia": somaPotencia,
+        "inversores": inversoresData,
+        "co2": co2
     }
 
     return render(request, 'SimpleBuy/equipamentos.html', context)
 
 
-def visualizar_equipamento(request):
+def visualizar_equipamento(request, id_usina, id_equipamento):
+    dao = GenericDao()
+    daoParameter = DaoParametroInversor()
 
-    localidade = ""
+    usina = dao.get(Localidade, id_usina)
+    inversores = dao.get_inversores_by_usina(Inversor, usina)
+
+    for i in inversores:
+        if str(i.id) == id_equipamento:
+            inversor = i
+            i.selected = True
+            break
+
+    inversor = dao.get(Inversor, id_equipamento)
+
+
+
+    parametros = daoParameter.get_parameters_by_inversor(inversor)
+
+    valorDia = 0
+    valorMes = 0
+    valorAno = 0
+    valorPotencia = 0
+    valorTotal = 0
+    valorFrequencia = 0
+    horasHoje = 0
+
+
+    for par in parametros:
+        if 'potencia' in par.nome:
+            valorPotencia += dao.get_last_leitura_by_param(Leitura_H, par.id).valor
+        if 'geracao_dia' in par.nome:
+            valorDia += dao.get_last_leitura_by_param(Leitura_H, par.id).valor
+        if 'geracao_mes' in par.nome:
+            valorMes += dao.get_last_leitura_by_param(Leitura_H, par.id).valor
+        if 'geracao_ano' in par.nome:
+            valorAno += dao.get_last_leitura_by_param(Leitura_H, par.id).valor
+        if 'geracao_total' in par.nome:
+            valorTotal += dao.get_last_leitura_by_param(Leitura_H, par.id).valor
+        if 'frequencia' in par.nome:
+            valorFrequencia += dao.get_last_leitura_by_param(Leitura_H, par.id).valor
+        if 'horasHoje' in par.nome:
+            horasHoje += dao.get_last_leitura_by_param(Leitura_H, par.id).valor
+
+
+
 
     context = {
-        "localidade": localidade
+        "usina": usina,
+        "inversores": inversores,
+        "totalDia": valorDia,
+        "totalMes": valorMes,
+        "totalAno": valorAno,
+        "potencia": valorPotencia,
+        "valorFrequencia": valorFrequencia,
+        "horasHoje": horasHoje
     }
     return render(request, 'SimpleBuy/visualizar-equipamento.html', context)
 

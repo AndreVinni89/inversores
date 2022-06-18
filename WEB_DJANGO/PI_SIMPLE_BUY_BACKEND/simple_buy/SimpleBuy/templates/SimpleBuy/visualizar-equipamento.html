@@ -23,7 +23,7 @@
             <a href="/cadastrar_inversor">Cadastrar Equipamento</a>
         </div>
         <div class="link-container"  id="selected">
-            <a href="/equipamentos">Equipamentos</a>
+            <a href="/equipamentos/1">Equipamentos</a>
         </div>
         <div class="link-container">
             <a href="/cadastrar_localidade">Cadastrar usina</a>
@@ -42,21 +42,21 @@
 
         <div class="equipamento">
             <h2>Equipamentos</h2>
-            <a href="visualizar-equipamento.html" class="selected" >
-                <h4>Equipamento 1</h4>
-            </a>
-            <a href="visualizar-equipamento.html">
-                <h4>Equipamento 2</h4>
-            </a>
-            <a href="visualizar-equipamento.html">
-                <h4>Equipamento 3</h4>
-            </a>
-            <a href="visualizar-equipamento.html">
-                <h4>Equipamento 4</h4>
-            </a>
-            <a href="visualizar-equipamento.html">
-                <h4>Equipamento 5</h4>
-            </a>
+            {% for inversor in inversores %}
+
+                {% if inversor.selected %}
+                    <a onclick="location.href='/visualizar-equipamento/{{usina.id}}/{{inversor.id}}'" class="selected" >
+                        <h4>{{inversor.nome}}</h4>
+                    </a>
+                {% else %}
+                    <a onclick="location.href='/visualizar-equipamento/{{usina.id}}/{{inversor.id}}'">
+                        <h4>{{inversor.nome}}</h4>
+                    </a>
+                {% endif %}
+
+            {% endfor %}
+
+
         </div>
 
 
@@ -65,24 +65,24 @@
 
             <div class="card-equipamento">
                 <h3 class="card-header-equipamento">Geração Hoje</h3>
-                <div class="card-content-equipamento">100 C°</div>
+                <div class="card-content-equipamento">{{totalDia}}</div>
 
             </div>
             <div class="card-equipamento">
                 <h3 class="card-header-equipamento">Geração Mês</h3>
-                <div class="card-content-equipamento">100 °C</div>
+                <div class="card-content-equipamento">{{totalMes}}</div>
             </div>
             <div class="card-equipamento">
                 <h3 class="card-header-equipamento">Horas Hoje</h3>
-                <div class="card-content-equipamento">100 °C</div>
+                <div class="card-content-equipamento">{{horasHoje}}</div>
             </div>
             <div class="card-equipamento">
                 <h3 class="card-header-equipamento">Frequencia</h3>
-                <div class="card-content-equipamento">100 °C</div>
+                <div class="card-content-equipamento">{{valorFrequencia}}</div>
             </div>
             <div class="card-equipamento">
                 <h3 class="card-header-equipamento">Potencia</h3>
-                <div class="card-content-equipamento">100 °C</div>
+                <div class="card-content-equipamento">{{potencia}}</div>
             </div>
         </div>
     

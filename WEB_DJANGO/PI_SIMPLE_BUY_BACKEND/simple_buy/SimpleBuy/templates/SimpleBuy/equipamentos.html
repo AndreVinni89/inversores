@@ -26,7 +26,7 @@
             <a href="/cadastrar_inversor">Cadastrar Equipamento</a>
         </div>
         <div class="link-container" id="selected">
-            <a href="/equipamentos">Equipamentos</a>
+            <a href="/equipamentos/1">Equipamentos</a>
         </div>
         <div class="link-container">
             <a href="/cadastrar_localidade">Cadastrar usina</a>
@@ -42,30 +42,30 @@
     <div class="card-container-usina">
 
         <div class="card-usina">
-            <h3 class="card-header-usina">Nome da Usina</h3>
-            <div class="card-content-usina">CIDADE</div>
-            <div class="card-content-usina">Potencia: 100 KW</div>
+            <h3 class="card-header-usina">{{usina.nome}}</h3>
+            <div class="card-content-usina">{{usina.cidade}}</div>
+            <div class="card-content-usina">Potencia: {{potencia}}</div>
         </div>
 
         <div class="card-usina">
             <h3 class="card-header-usina">Geração Hoje</h3>
-            <div class="card-content-usina">100 °C</div>
+            <div class="card-content-usina">{{totalDia}}</div>
         </div>
         <div class="card-usina">
             <h3 class="card-header-usina">Geração Mês</h3>
-            <div class="card-content-usina">100 °C</div>
+            <div class="card-content-usina">{{totalMes}}</div>
         </div>
         <div class="card-usina">
             <h3 class="card-header-usina">Geração Anual</h3>
-            <div class="card-content-usina">100 °C</div>
+            <div class="card-content-usina">{{totalAno}}</div>
         </div>
         <div class="card-usina">
             <h3 class="card-header-usina">Fator de Capacidade</h3>
-            <div class="card-content-usina">100 °C</div>
+            <div class="card-content-usina">WIP</div>
         </div>
         <div class="card-usina">
             <h3 class="card-header-usina">CO2 Anual</h3>
-            <div class="card-content-usina">100 °C</div>
+            <div class="card-content-usina">{{co2}}</div>
         </div>
 
     </div>
@@ -76,21 +76,21 @@
 
         <div class="usinas">
             <h2>Usinas</h2>
-            <a href="visualizar-usina.html" class="selected" >
-                <h4>Nome Usina</h4>
-            </a>
-            <a href="visualizar-usina.html">
-                <h4>Nome Usina</h4>
-            </a>
-            <a href="visualizar-usina.html">
-                <h4>Nome Usina</h4>
-            </a>
-            <a href="visualizar-usina.html">
-                <h4>Nome Usina</h4>
-            </a>
-            <a href="visualizar-usina.html">
-                <h4>Nome Usina</h4>
-            </a>
+            {% for usina in usinas %}
+
+
+                {% if usina.selected %}
+                    <a onclick="location.href='/equipamentos/{{usina.id}}'"  class="selected">
+                        <h4>{{usina.nome}}</h4>
+                    </a>
+                {% else %}
+                    <a onclick="location.href='/equipamentos/{{usina.id}}'" >
+                        <h4>{{usina.nome}}</h4>
+                    </a>
+                {% endif %}
+            {% endfor %}
+
+
         </div>
 
         <div class="container-equipamentos">
@@ -102,27 +102,16 @@
                     <th>Modelo</th>
                     <th>KWh Hoje</th>
                     <th>KWh Total</th>
-                </tr>          
-                <tr onclick="location.href='visualizar-equipamento'" class="clickable-row">
-                    <td>NOME USINA</td>
-                    <td>MODELO</td>
-                    <td >KW HOJE</td>
-                    <td >KW TOTAL</td>
                 </tr>
+                {% for inversor in inversores %}
+                    <tr onclick="location.href='/visualizar-equipamento/{{usina.id}}/{{inversor.id}}'" class="clickable-row">
+                        <td>{{inversor.nome}}</td>
+                        <td>{{inversor.marca}}</td>
+                        <td >{{inversor.dia}}</td>
+                        <td >{{inversor.total}}</td>
+                    </tr>
+                {% endfor %}
 
-                                <tr onclick="location.href='visualizar-equipamento'" class="clickable-row">
-                    <td>NOME USINA</td>
-                    <td>MODELO</td>
-                    <td >KW HOJE</td>
-                    <td >KW TOTAL</td>
-                </tr>
-
-                                <tr onclick="location.href='visualizar-equipamento'" class="clickable-row">
-                    <td>NOME USINA</td>
-                    <td>MODELO</td>
-                    <td >KW HOJE</td>
-                    <td >KW TOTAL</td>
-                </tr>
 
             </table>
         </div>

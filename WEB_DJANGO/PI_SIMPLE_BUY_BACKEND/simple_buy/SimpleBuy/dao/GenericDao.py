@@ -40,3 +40,19 @@ class GenericDao:
         except:
             raise
         return model
+
+    def get_inversores_by_usina(self, Model, usina):
+        try:
+
+            model = Model.objects.all().filter(local_id=usina.id)
+        except:
+            raise
+        return model
+
+
+    def get_last_leitura_by_param(self, Model, param):
+        try:
+            model = Model.objects.all().filter(parametro_id=param).order_by('-data')
+        except:
+            raise
+        return model[0]

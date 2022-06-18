@@ -10,6 +10,8 @@ class Localidade(models.Model):
     estado = models.CharField(max_length=200)
     cep = models.CharField(max_length=200)
     email = models.CharField(max_length=200)
+    selected = False
+
 
     def __str__(self):
         return self.nome
@@ -19,6 +21,7 @@ class Inversor(models.Model):
     nome = models.CharField(max_length=200)
     marca = models.CharField(max_length=200)
     local_id = models.ForeignKey(Localidade, on_delete=models.CASCADE)
+    selected = False
 
     def __str__(self):
         return self.nome
@@ -33,7 +36,7 @@ class Parametro(models.Model):
         return self.nome
 
 class Leitura_H(models.Model):
-    parametro = models.ForeignKey(Parametro, on_delete=models.CASCADE)
+    parametro_id = models.FloatField()
     valor = models.FloatField()
     data = models.DateTimeField()
 
