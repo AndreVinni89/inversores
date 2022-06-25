@@ -70,7 +70,7 @@ def main():
             for leitura in leituras_list_temp["leituras_list"]:
                 add(inversor.parametros_ids[pos], leitura['leitura'], datetime.now())
                 pos+=1
-
+        sleep(300)
 
 
 

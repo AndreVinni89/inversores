@@ -40,6 +40,9 @@ class Leitura_H(models.Model):
     valor = models.FloatField()
     data = models.DateTimeField()
 
+    def __str__(self):
+        return str(self.data) + " - " + str(self.valor)
+
 
 
 

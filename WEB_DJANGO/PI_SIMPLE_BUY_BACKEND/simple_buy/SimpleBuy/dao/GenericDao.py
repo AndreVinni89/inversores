@@ -56,3 +56,17 @@ class GenericDao:
         except:
             raise
         return model[0]
+
+    def get_leituras_by_param(self, Model, param):
+        try:
+            models = Model.objects.all().filter(parametro_id=param).order_by('data')
+        except:
+            raise
+        return models
+
+    def get_leituras_by_param_desc(self, Model, param):
+        try:
+            models = Model.objects.all().filter(parametro_id=param).order_by('data')
+        except:
+            raise
+        return models

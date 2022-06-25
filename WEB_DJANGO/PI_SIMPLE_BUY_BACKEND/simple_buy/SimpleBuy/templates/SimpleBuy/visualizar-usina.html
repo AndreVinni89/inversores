@@ -14,6 +14,7 @@
 
 <!--    <link rel="stylesheet" href="style/style.css">-->
 <!--    <link rel="stylesheet" href="style/usina-style.css">-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.8.0/chart.min.js" integrity="sha512-sW/w8s4RWTdFFSduOTGtk4isV1+190E/GghVffMA9XczdJ2MDzSzLEubKAs5h0wzgSJOQTRYyaz73L3d6RtJSg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 </head>
 
@@ -36,7 +37,7 @@
             <a href="/cadastrar_inversor">Cadastrar Equipamento</a>
         </div>
         <div class="link-container">
-            <a href="/equipamentos/1">Equipamentos</a>
+            <a href="/equipamentos/1/dia">Equipamentos</a>
         </div>
         <div class="link-container">
             <a href="/cadastrar_localidade">Cadastrar usina</a>
@@ -104,14 +105,19 @@
 
 
         <div class="graph1">
-            <img src="Potencia.png" alt="">
+            <h1>Potência (kW)</h1>
+            <canvas id="myChartPotencia"  width="50%"></canvas>
+
+
 
         </div>
 
 
 
         <div class="graph2">
-            <img src="Potencia.png" alt="">
+
+            <h1>Geração (KwH)</h1>
+            <canvas id="myChart"  width="50%"></canvas>
 
 
         </div>
@@ -122,12 +128,78 @@
 
     </div>
 
-
-
-
-
-
-
 </body>
+
+
+<script>
+
+
+const ctx = document.getElementById('myChartPotencia').getContext('2d');
+
+
+const myChart = new Chart(ctx, {
+    type: 'line',
+        data: {
+            labels: [{% for leitura in holder.valores.0%} '{{leitura.data}}', {% endfor %}],
+            datasets: [
+            {% for graph in holder.valores %}
+                {
+                    label: '{{graph.0.inversor}}',
+                    data: [{% for leitura in graph %} {{leitura.valor}}, {% endfor %}],
+
+                    backgroundColor: [
+                        '{{graph.0.color}}'
+                    ],
+                    borderColor: [
+                        '{{graph.0.color}}'
+                    ],
+                    borderWidth: 1
+                },
+            {% endfor %}
+
+        ]
+    },
+    options: {
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
+    }
+});
+
+
+const ctx2 = document.getElementById('myChart').getContext('2d');
+const myChart2 = new Chart(ctx2, {
+    type: 'bar',
+    data: {
+        labels: [{% for dia in generationHolder %} '{{dia.data}}', {% endfor %} ],
+        datasets: [
+
+
+        {
+            label: ['Energia Gerada'],
+            data: [{% for graph in generationHolder %} {{graph.valor}}, {% endfor %}],
+            backgroundColor: [
+                'rgba(255, 159, 64, 1)'
+            ],
+            borderColor: [
+                'rgba(255, 159, 64, 1)'
+            ],
+            borderWidth: 1
+        }
+
+        ]
+    },
+    options: {
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
+    }
+});
+
+</script>
 
 </html>

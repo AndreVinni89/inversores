@@ -41,7 +41,7 @@
 
 .content-index{
     display: grid;
-    grid-template-columns: 60% 40%;
+    grid-template-columns: 50% 50%;
     grid-gap: 1%;
     margin-top: 2vh;
     margin-left: 1%;
@@ -59,7 +59,7 @@
 }
 
 .container-graph{
-    height: 50vh;
+    height: 75vh;
     border: 1px solid black;
     border-radius: 8px;
     display: flex;
@@ -68,9 +68,9 @@
     justify-content: center;
 }
 
-.container-graph img{
+.container-graph .myChart{
     height: 90%;
-    width: 90%;
+    width: 50%;
 }
 
 .container-list h1{

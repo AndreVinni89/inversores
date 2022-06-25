@@ -14,6 +14,7 @@
 
 <!--    <link rel="stylesheet" href="style/style.css">-->
 <!--    <link rel="stylesheet" href="style/visualizar-equipamento-style.css">-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.8.0/chart.min.js" integrity="sha512-sW/w8s4RWTdFFSduOTGtk4isV1+190E/GghVffMA9XczdJ2MDzSzLEubKAs5h0wzgSJOQTRYyaz73L3d6RtJSg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 </head>
 
@@ -23,7 +24,7 @@
             <a href="/cadastrar_inversor">Cadastrar Equipamento</a>
         </div>
         <div class="link-container"  id="selected">
-            <a href="/equipamentos/1">Equipamentos</a>
+            <a href="/equipamentos/1/dia">Equipamentos</a>
         </div>
         <div class="link-container">
             <a href="/cadastrar_localidade">Cadastrar usina</a>
@@ -90,20 +91,23 @@
 
             <div class="graph-row-1">
                 <div class="graph">
-                    <img src="Potencia.png" alt="">
+                    <h1>Potência X Temperatura</h1>
+                    <canvas id="myChartPotencia"  width="50%"></canvas>
+
                 </div>
                 <div class="graph">
-                    <img src="Potencia.png" alt="">
+                    <h1>Tensões de Linha (V) X Fator de Potência</h1>
+                    <canvas id="myChartTensoes"  width="50%"></canvas>
                 </div>
             </div>
 
             <div class="graph-row-2">
                 <div class="graph">
-                    <img src="Potencia.png" alt="">
+                    <h1>Correntes de Linha (A)</h1>
+                    <canvas id="myChartCorrente"  width="50%"></canvas>
+
                 </div>
-                <div class="graph">
-                    <img src="Potencia.png" alt="">
-                </div>
+
             </div>
 
             <div class="alerts">
@@ -113,5 +117,235 @@
         </div>
     </div>
 </body>
+
+
+<script>
+
+const ctx = document.getElementById('myChartPotencia').getContext('2d');
+
+
+const myChart = new Chart(ctx, {
+    type: 'line',
+
+
+        data: {
+            labels: [{% for leitura in potenciaGraph %} '{{leitura.data}}', {% endfor %}],
+            datasets: [
+
+            {
+                label: 'DC (kW)',
+                data: [{% for leitura in potenciaGraph %} {{leitura.valor}}, {% endfor %}],
+
+                backgroundColor: [
+                    'rgba(153, 102, 255, 1)',
+                ],
+                borderColor: [
+                    'rgba(153, 102, 255, 1)',
+                ],
+                borderWidth: 0.5
+            },
+            {
+                label: 'Rede (kW)',
+                data: [{% for leitura in potenciaRedeGraph %} {{leitura.valor}}, {% endfor %}],
+
+                backgroundColor: [
+                  'rgba(255, 206, 86, 1)'
+
+                ],
+                borderColor: [
+                  'rgba(255, 206, 86, 1)'
+
+                ],
+                borderWidth: 1
+            },
+            {
+                label: 'Temp (°C)',
+                data: [{% for leitura in temperaturaGraph %} {{leitura.valor}}, {% endfor %}],
+
+                backgroundColor: [
+                                    'rgba(75, 192, 192, 1)',
+
+                ],
+                borderColor: [
+                                    'rgba(75, 192, 192, 1)',
+
+                ],
+                borderWidth: 1
+            },
+
+
+
+
+        ]
+    },
+    options: {
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
+    }
+});
+
+
+const ctx2 = document.getElementById('myChartCorrente').getContext('2d');
+
+const myChart2 = new Chart(ctx2, {
+    type: 'line',
+
+
+        data: {
+            labels: [{% for leitura in correnteDc1 %} '{{leitura.data}}', {% endfor %}],
+            datasets: [
+
+            {
+                label: 'Fase A',
+                data: [{% for leitura in correnteDc1 %} {{leitura.valor}}, {% endfor %}],
+
+                backgroundColor: [
+                    'rgba(153, 102, 255, 1)',
+                ],
+                borderColor: [
+                    'rgba(153, 102, 255, 1)',
+                ],
+                borderWidth: 0.5
+            },
+            {
+                label: 'Fase B',
+                data: [{% for leitura in correnteDc2 %} {{leitura.valor}}, {% endfor %}],
+
+                backgroundColor: [
+                  'rgba(255, 206, 86, 1)'
+
+                ],
+                borderColor: [
+                  'rgba(255, 206, 86, 1)'
+
+                ],
+                borderWidth: 1
+            },
+            {
+                label: 'Fase C',
+                data: [{% for leitura in correnteDc3 %} {{leitura.valor}}, {% endfor %}],
+
+                backgroundColor: [
+                                    'rgba(75, 192, 192, 1)',
+
+                ],
+                borderColor: [
+                                    'rgba(75, 192, 192, 1)',
+
+                ],
+                borderWidth: 1
+            },
+
+
+
+
+        ]
+    },
+    options: {
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
+    }
+});
+
+
+const ctx3 = document.getElementById('myChartTensoes').getContext('2d');
+
+const myChart3 = new Chart(ctx3, {
+    type: 'line',
+        data: {
+            labels: [{% for leitura in tensaoA %} '{{leitura.data}}', {% endfor %}],
+            datasets: [
+
+            {
+                label: 'Tensão A',
+                data: [{% for leitura in tensaoA %} {{leitura.valor}}, {% endfor %}],
+
+                backgroundColor: [
+                    'rgba(153, 102, 255, 1)',
+                ],
+                borderColor: [
+                    'rgba(153, 102, 255, 1)',
+                ],
+                borderWidth: 0.5
+            },
+            {
+                label: 'Tensão B',
+                data: [{% for leitura in tensaoB %} {{leitura.valor}}, {% endfor %}],
+
+                backgroundColor: [
+                  'rgba(255, 206, 86, 1)'
+
+                ],
+                borderColor: [
+                  'rgba(255, 206, 86, 1)'
+
+                ],
+                borderWidth: 1
+            },
+            {
+                label: 'Tensão C',
+                data: [{% for leitura in tensaoC %} {{leitura.valor}}, {% endfor %}],
+
+                backgroundColor: [
+                                    'rgba(75, 192, 192, 1)',
+
+                ],
+                borderColor: [
+                                    'rgba(75, 192, 192, 1)',
+
+                ],
+                borderWidth: 1
+            },
+
+
+            {
+                label: 'Fator de Potência',
+                data: [{% for leitura in fator_potencia %} {{leitura.valor}}, {% endfor %}],
+
+                backgroundColor: [
+                  'rgba(255, 99, 132, 1)',
+
+
+                ],
+                borderColor: [
+                  'rgba(255, 99, 132, 1)',
+
+                ],
+                borderWidth: 1
+            },
+            {
+                label: 'Tensão DC',
+                data: [{% for leitura in Tensao_DC %} {{leitura.valor}}, {% endfor %}],
+
+                backgroundColor: [
+                    'rgba(54, 162, 235, 1)'
+
+                ],
+                borderColor: [
+                     'rgba(54, 162, 235, 1)'
+
+                ],
+                borderWidth: 1
+            },
+
+
+        ]
+    },
+    options: {
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
+    }
+});
+
+</script>
 
 </html>

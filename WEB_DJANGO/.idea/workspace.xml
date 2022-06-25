@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="3c41caca-13fa-4e4c-b539-0d811bf63c2c" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/PI_SIMPLE_BUY_BACKEND/simple_buy/SimpleBuy/dao/GenericDao.py" beforeDir="false" afterPath="$PROJECT_DIR$/PI_SIMPLE_BUY_BACKEND/simple_buy/SimpleBuy/dao/GenericDao.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PI_SIMPLE_BUY_BACKEND/simple_buy/SimpleBuy/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/PI_SIMPLE_BUY_BACKEND/simple_buy/SimpleBuy/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PI_SIMPLE_BUY_BACKEND/simple_buy/SimpleBuy/static/style/equipamentos-style.css" beforeDir="false" afterPath="$PROJECT_DIR$/PI_SIMPLE_BUY_BACKEND/simple_buy/SimpleBuy/static/style/equipamentos-style.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PI_SIMPLE_BUY_BACKEND/simple_buy/SimpleBuy/static/style/index-style.css" beforeDir="false" afterPath="$PROJECT_DIR$/PI_SIMPLE_BUY_BACKEND/simple_buy/SimpleBuy/static/style/index-style.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PI_SIMPLE_BUY_BACKEND/simple_buy/SimpleBuy/templates/SimpleBuy/cadastrar-localidade.html" beforeDir="false" afterPath="$PROJECT_DIR$/PI_SIMPLE_BUY_BACKEND/simple_buy/SimpleBuy/templates/SimpleBuy/cadastrar-localidade.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PI_SIMPLE_BUY_BACKEND/simple_buy/SimpleBuy/templates/SimpleBuy/cadastrar_inversores.html" beforeDir="false" afterPath="$PROJECT_DIR$/PI_SIMPLE_BUY_BACKEND/simple_buy/SimpleBuy/templates/SimpleBuy/cadastrar_inversores.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PI_SIMPLE_BUY_BACKEND/simple_buy/SimpleBuy/templates/SimpleBuy/equipamentos.html" beforeDir="false" afterPath="$PROJECT_DIR$/PI_SIMPLE_BUY_BACKEND/simple_buy/SimpleBuy/templates/SimpleBuy/equipamentos.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PI_SIMPLE_BUY_BACKEND/simple_buy/SimpleBuy/templates/SimpleBuy/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/PI_SIMPLE_BUY_BACKEND/simple_buy/SimpleBuy/templates/SimpleBuy/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PI_SIMPLE_BUY_BACKEND/simple_buy/SimpleBuy/templates/SimpleBuy/info_inversor.html" beforeDir="false" afterPath="$PROJECT_DIR$/PI_SIMPLE_BUY_BACKEND/simple_buy/SimpleBuy/templates/SimpleBuy/info_inversor.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PI_SIMPLE_BUY_BACKEND/simple_buy/SimpleBuy/templates/SimpleBuy/lista_inversores.html" beforeDir="false" afterPath="$PROJECT_DIR$/PI_SIMPLE_BUY_BACKEND/simple_buy/SimpleBuy/templates/SimpleBuy/lista_inversores.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PI_SIMPLE_BUY_BACKEND/simple_buy/SimpleBuy/templates/SimpleBuy/performance.html" beforeDir="false" afterPath="$PROJECT_DIR$/PI_SIMPLE_BUY_BACKEND/simple_buy/SimpleBuy/templates/SimpleBuy/performance.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PI_SIMPLE_BUY_BACKEND/simple_buy/SimpleBuy/templates/SimpleBuy/visualizar-equipamento.html" beforeDir="false" afterPath="$PROJECT_DIR$/PI_SIMPLE_BUY_BACKEND/simple_buy/SimpleBuy/templates/SimpleBuy/visualizar-equipamento.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PI_SIMPLE_BUY_BACKEND/simple_buy/SimpleBuy/templates/SimpleBuy/visualizar-usina.html" beforeDir="false" afterPath="$PROJECT_DIR$/PI_SIMPLE_BUY_BACKEND/simple_buy/SimpleBuy/templates/SimpleBuy/visualizar-usina.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PI_SIMPLE_BUY_BACKEND/simple_buy/SimpleBuy/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/PI_SIMPLE_BUY_BACKEND/simple_buy/SimpleBuy/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PI_SIMPLE_BUY_BACKEND/simple_buy/SimpleBuy/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/PI_SIMPLE_BUY_BACKEND/simple_buy/SimpleBuy/views.py" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="ProjectId" id="2B4FQ12jZOT6CGPd89YWGVg3Z5R" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "last_opened_file_path": "C:/Users/T-GAMER/Documents/github/Inversores/WEB_DJANGO/PI_SIMPLE_BUY_BACKEND/simple_buy"
+  }
+}]]></component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="3c41caca-13fa-4e4c-b539-0d811bf63c2c" name="Changes" comment="" />
+      <created>1656157430244</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1656157430244</updated>
+    </task>
+    <servers />
+  </component>
+</project>

@@ -7,12 +7,12 @@ from .dao.GenericDao import GenericDao
 from .dao.DaoParametroInversor import DaoParametroInversor
 from .models import *
 from asgiref.sync import sync_to_async
-from datetime import datetime
+from datetime import datetime, timedelta
 from.utils.Leitura import Leitura
 import requests
 import json
 import sqlite3
-
+from operator import attrgetter
 
 localDB = R"C:\Users\T-GAMER\Documents\github\Inversores\WEB_DJANGO\PI_SIMPLE_BUY_BACKEND\simple_buy\db.sqlite3"
 
@@ -56,7 +56,11 @@ def index(request):
     totalMes = 0
     totalAno = 0
 
+    COLORS = getColors()
+    contColor = 0
 
+
+    generationGraph = []
 
     usinasDados = []
 
@@ -77,6 +81,27 @@ def index(request):
                     somaPotencia += dao.get_last_leitura_by_param(Leitura_H, par.id).valor
                 if 'geracao_dia' in par.nome:
                     somaDia += dao.get_last_leitura_by_param(Leitura_H, par.id).valor
+                    leituras = dao.get_leituras_by_param_desc(Leitura_H, par.id)
+                    tempDay = 0
+                    for leitura in leituras:
+                        if datetime.now() - leitura.data.replace(tzinfo=None) < timedelta(days=30):
+                            if tempDay != leitura.data.day:
+                                tempDay = leitura.data.day
+                                if len(generationGraph) > 0:
+                                    for x in generationGraph:
+                                        achou = False
+                                        if x.data == (str(tempDay) + "/" + str(leitura.data.month)):
+                                            achou = True
+                                            x.valor += int(leitura.valor)
+                                            break
+                                    if not achou:
+                                        generationGraph.append(GraphDTO(str(tempDay) + "/" + str(leitura.data.month), int(leitura.valor),
+                                                     inversor.nome, COLORS[contColor]))
+                                else:
+                                    generationGraph.append(
+                                        GraphDTO(str(tempDay) + "/" + str(leitura.data.month), int(leitura.valor),
+                                                 inversor.nome, COLORS[contColor]))
+
                 if 'geracao_mes' in par.nome:
                     somaMes += dao.get_last_leitura_by_param(Leitura_H, par.id).valor
                 if 'geracao_ano' in par.nome:
@@ -87,14 +112,25 @@ def index(request):
         totalMes += somaMes
         totalDia += somaDia
 
+
+
     co2 = (totalMes * 12) * 0.57
+
+
+
+    generationGraph = sorted(generationGraph, key=attrgetter('data'), reverse=False)
+
+
+
 
     context = {
         "usinas": usinasDados,
         "totalDia": totalDia,
         "totalMes": totalMes,
         "totalAno": totalAno,
-        "co2": co2
+        "co2": co2,
+        "generationHolder": generationGraph
+
     }
 
     return render(request, 'SimpleBuy/index.html', context)
@@ -103,6 +139,13 @@ def visualizar_usina(request, id):
     dao = GenericDao()
     daoParameter = DaoParametroInversor()
 
+    COLORS = getColors()
+    contColor = 0
+
+    print("ID: ")
+    print(id)
+
+    potenciaGraph = None
 
     usinas = dao.selectAll(Localidade)
 
@@ -113,24 +156,62 @@ def visualizar_usina(request, id):
 
     usina = dao.get(Localidade, id)
 
+    print('usina: ' + usina.nome )
+
     somaDia = 0
     somaMes = 0
     somaAno = 0
     somaPotencia = 0
+    holder = GraphHolder()
 
     inversores = dao.get_inversores_by_usina(Inversor, usina)
+    generationGraph = []
     for inversor in inversores:
         parametros = daoParameter.get_parameters_by_inversor(inversor)
+        potenciaGraph = []
 
         for par in parametros:
             if 'potencia' in par.nome:
                 somaPotencia += dao.get_last_leitura_by_param(Leitura_H, par.id).valor
+                leituras = dao.get_leituras_by_param(Leitura_H, par.id)
+                for leitura in leituras:
+                    if datetime.now() - leitura.data.replace(tzinfo=None) < timedelta(hours=12):
+                        hora = str(leitura.data.hour) + ":" + str(leitura.data.minute)
+                        potenciaGraph.append(GraphDTO(hora, leitura.valor, inversor.nome, COLORS[contColor]))
+
             if 'geracao_dia' in par.nome:
                 somaDia += dao.get_last_leitura_by_param(Leitura_H, par.id).valor
+                leituras = dao.get_leituras_by_param_desc(Leitura_H, par.id)
+                tempDay = 0
+                for leitura in leituras:
+                    if datetime.now() - leitura.data.replace(tzinfo=None) < timedelta(days=30):
+                        if tempDay != leitura.data.day:
+                            tempDay = leitura.data.day
+                            if len(generationGraph) > 0:
+                                for x in generationGraph:
+                                    achou = False
+                                    if x.data == (str(tempDay) + "/" + str(leitura.data.month)):
+                                        achou = True
+                                        x.valor += int(leitura.valor)
+                                        break
+                                if not achou:
+                                    generationGraph.append(
+                                        GraphDTO(str(tempDay) + "/" + str(leitura.data.month), int(leitura.valor),
+                                                 inversor.nome, COLORS[contColor]))
+                            else:
+                                generationGraph.append(
+                                    GraphDTO(str(tempDay) + "/" + str(leitura.data.month), int(leitura.valor),
+                                             inversor.nome, COLORS[contColor]))
+
+
             if 'geracao_mes' in par.nome:
                 somaMes += dao.get_last_leitura_by_param(Leitura_H, par.id).valor
             if 'geracao_ano' in par.nome:
                 somaAno += dao.get_last_leitura_by_param(Leitura_H, par.id).valor
+
+        holder.valores.append(potenciaGraph)
+        contColor += 1
+
 
     context = {
         "usinas": usinas,
@@ -138,19 +219,82 @@ def visualizar_usina(request, id):
         "totalDia": somaDia,
         "totalMes": somaMes,
         "totalAno": somaAno,
-        "potencia": somaPotencia
+        "potencia": somaPotencia,
+        "holder": holder,
+        "generationHolder": generationGraph
     }
 
 
     return render(request, 'SimpleBuy/visualizar-usina.html', context)
 
-def equipamentos(request, id=1):
+class GraphDTO:
+    def __init__(self, data, valor, inversor, color):
+        self.data = data
+        self.valor = valor
+        self.inversor = inversor
+        self.color = color
+
+    def __str__(self):
+        return str(self.data) + " - " + str(self.valor)
+
+class TimeDTO:
+    def __init__(self, data, inversor, color):
+        self.data = data
+        self.valor = []
+        self.inversor = inversor
+        self.color = color
+
+class GraphHolder:
+    def __init__(self):
+        self.valores = []
+
+def getColors():
+    colors = ['rgba(255, 99, 132, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)']
+    return colors
+
+def parseMonth(num):
+    if num == 1:
+        return 'Janeiro'
+    if num == 2:
+        return 'Fevereiro'
+    if num == 3:
+        return 'Março'
+    if num == 4:
+        return 'Abril'
+    if num == 5:
+        return 'Maio'
+    if num == 6:
+        return 'Junho'
+    if num == 7:
+        return 'Julho'
+    if num == 8:
+        return 'Agosto'
+    if num == 9:
+        return 'Setembro'
+    if num == 10:
+        return 'Outubro'
+    if num == 11:
+        return 'Novembro'
+    if num == 12:
+        return 'Dezembro'
+
+def equipamentos(request, id=1, filtro='dia'):
     dao = GenericDao()
     daoParameter = DaoParametroInversor()
 
+    COLORS = getColors()
+    contColor = 0
+
+
+
     usina = dao.get(Localidade, id)
     usinas = dao.selectAll(Localidade)
-
+    potenciaGraph = None
 
     for u in usinas:
         if str(u.id) == id:
@@ -161,6 +305,10 @@ def equipamentos(request, id=1):
     somaMes = 0
     somaAno = 0
     somaPotencia = 0
+    holder = GraphHolder()
+
+    generationHolder = []
+
 
     inversores = dao.get_inversores_by_usina(Inversor, usina)
     inversoresData = []
@@ -173,21 +321,65 @@ def equipamentos(request, id=1):
         valorPotencia = 0
         valorTotal = 0
 
+        potenciaGraph = []
+
+        generationGraph = []
+
+
         for par in parametros:
             if 'potencia' in par.nome:
                 valorPotencia += dao.get_last_leitura_by_param(Leitura_H, par.id).valor
+                leituras = dao.get_leituras_by_param(Leitura_H, par.id)
+                for leitura in leituras:
+                    if datetime.now() - leitura.data.replace(tzinfo=None) < timedelta(hours=12):
+                        hora = str(leitura.data.hour) + ":" + str(leitura.data.minute)
+                        potenciaGraph.append(GraphDTO(hora, leitura.valor, inversor.nome, COLORS[contColor]))
+
+
+
             if 'geracao_dia' in par.nome:
                 valorDia += dao.get_last_leitura_by_param(Leitura_H, par.id).valor
+                if filtro == 'dia':
+                    leituras = dao.get_leituras_by_param_desc(Leitura_H, par.id)
+                    tempDay = 0
+                    for leitura in leituras:
+                        if datetime.now() - leitura.data.replace(tzinfo=None) < timedelta(days=30):
+                            if tempDay != leitura.data.day:
+                                tempDay = leitura.data.day
+                                generationGraph.append(GraphDTO(str(tempDay) + "/" + str(leitura.data.month), int(leitura.valor), inversor.nome, COLORS[contColor]))
+
+
+
+
             if 'geracao_mes' in par.nome:
                 valorMes += dao.get_last_leitura_by_param(Leitura_H, par.id).valor
+                if filtro == 'mes':
+                    leituras = dao.get_leituras_by_param_desc(Leitura_H, par.id)
+                    tempMonth = 0
+                    for leitura in leituras:
+                        if datetime.now() - leitura.data.replace(tzinfo=None) < timedelta(days=360):
+                            if tempMonth != leitura.data.month:
+                                tempMonth = leitura.data.month
+                                generationGraph.append(GraphDTO(parseMonth(leitura.data.month), int(leitura.valor), inversor.nome, COLORS[contColor]))
+
             if 'geracao_ano' in par.nome:
                 valorAno += dao.get_last_leitura_by_param(Leitura_H, par.id).valor
+                if filtro == 'ano':
+                    leituras = dao.get_leituras_by_param_desc(Leitura_H, par.id)
+                    tempYear = 0
+                    for leitura in leituras:
+                        if tempYear != leitura.data.year:
+                            tempYear = leitura.data.year
+                            generationGraph.append( GraphDTO(str(leitura.data.year), int(leitura.valor), inversor.nome, COLORS[contColor]))
+
             if 'geracao_total' in par.nome:
                 valorTotal += dao.get_last_leitura_by_param(Leitura_H, par.id).valor
 
-
         inversoresData.append(InversorDTO(inversor.nome, inversor.id, inversor.marca, valorPotencia, valorDia, valorMes, valorAno, valorTotal))
+        holder.valores.append(potenciaGraph)
+        generationHolder.append(generationGraph)
 
+        contColor += 1
 
         somaDia = valorDia
         somaMes = valorMes
@@ -198,6 +390,10 @@ def equipamentos(request, id=1):
     co2 = (somaMes * 12) * 0.57
 
 
+
+
+
+
     context = {
         "usinas": usinas,
         "usina": usina,
@@ -206,7 +402,10 @@ def equipamentos(request, id=1):
         "totalAno": somaAno,
         "potencia": somaPotencia,
         "inversores": inversoresData,
-        "co2": co2
+        "co2": co2,
+        "holder": holder,
+        "potenciaGraph":potenciaGraph,
+        "generationHolder": generationHolder
     }
 
     return render(request, 'SimpleBuy/equipamentos.html', context)
@@ -215,6 +414,10 @@ def equipamentos(request, id=1):
 def visualizar_equipamento(request, id_usina, id_equipamento):
     dao = GenericDao()
     daoParameter = DaoParametroInversor()
+
+    COLORS = getColors()
+    contColor = 0
+
 
     usina = dao.get(Localidade, id_usina)
     inversores = dao.get_inversores_by_usina(Inversor, usina)
@@ -239,10 +442,104 @@ def visualizar_equipamento(request, id_usina, id_equipamento):
     valorFrequencia = 0
     horasHoje = 0
 
+    potenciaGraph = []
+    potenciaRedeGraph = []
+    temperaturaGraph = []
+    correnteDc1 = []
+    correnteDc2 = []
+    correnteDc3 = []
+    fator_potencia = []
+    tensaoA = []
+    tensaoB = []
+    tensaoC = []
+    Tensao_DC = []
 
     for par in parametros:
+
         if 'potencia' in par.nome:
             valorPotencia += dao.get_last_leitura_by_param(Leitura_H, par.id).valor
+            leituras = dao.get_leituras_by_param(Leitura_H, par.id)
+            for leitura in leituras:
+                if datetime.now() - leitura.data.replace(tzinfo=None) < timedelta(hours=12):
+                    hora = str(leitura.data.hour) + ":" + str(leitura.data.minute)
+                    potenciaGraph.append(GraphDTO(hora, leitura.valor, inversor.nome, ''))
+
+
+        if 'potencia_rede' in par.nome:
+            horasHoje += dao.get_last_leitura_by_param(Leitura_H, par.id).valor
+            leituras = dao.get_leituras_by_param(Leitura_H, par.id)
+            for leitura in leituras:
+                if datetime.now() - leitura.data.replace(tzinfo=None) < timedelta(hours=12):
+                    hora = str(leitura.data.hour) + ":" + str(leitura.data.minute)
+                    potenciaRedeGraph.append(GraphDTO(hora, leitura.valor, inversor.nome, 'COLORS[contColor]'))
+
+
+        if 'temperatura' in par.nome:
+            leituras = dao.get_leituras_by_param(Leitura_H, par.id)
+            for leitura in leituras:
+                if datetime.now() - leitura.data.replace(tzinfo=None) < timedelta(hours=12):
+                    hora = str(leitura.data.hour) + ":" + str(leitura.data.minute)
+                    temperaturaGraph.append(GraphDTO(hora, leitura.valor, inversor.nome, 'COLORS[contColor]'))
+
+        if 'Corrente DC 1' in par.nome:
+            leituras = dao.get_leituras_by_param(Leitura_H, par.id)
+            for leitura in leituras:
+                if datetime.now() - leitura.data.replace(tzinfo=None) < timedelta(hours=12):
+                    hora = str(leitura.data.hour) + ":" + str(leitura.data.minute)
+                    correnteDc1.append(GraphDTO(hora, leitura.valor, inversor.nome, 'COLORS[contColor]'))
+
+        if 'Corrente DC 2' in par.nome:
+            leituras = dao.get_leituras_by_param(Leitura_H, par.id)
+            for leitura in leituras:
+                if datetime.now() - leitura.data.replace(tzinfo=None) < timedelta(hours=12):
+                    hora = str(leitura.data.hour) + ":" + str(leitura.data.minute)
+                    correnteDc2.append(GraphDTO(hora, leitura.valor, inversor.nome, 'COLORS[contColor]'))
+
+        if 'Corrente DC 3' in par.nome:
+            leituras = dao.get_leituras_by_param(Leitura_H, par.id)
+            for leitura in leituras:
+                if datetime.now() - leitura.data.replace(tzinfo=None) < timedelta(hours=12):
+                    hora = str(leitura.data.hour) + ":" + str(leitura.data.minute)
+                    correnteDc3.append(GraphDTO(hora, leitura.valor, inversor.nome, 'COLORS[contColor]'))
+
+
+        if 'Tensão A' in par.nome:
+            leituras = dao.get_leituras_by_param(Leitura_H, par.id)
+            for leitura in leituras:
+                if datetime.now() - leitura.data.replace(tzinfo=None) < timedelta(hours=12):
+                    hora = str(leitura.data.hour) + ":" + str(leitura.data.minute)
+                    tensaoA.append(GraphDTO(hora, leitura.valor, inversor.nome, 'COLORS[contColor]'))
+
+        if 'Tensão B' in par.nome:
+            leituras = dao.get_leituras_by_param(Leitura_H, par.id)
+            for leitura in leituras:
+                if datetime.now() - leitura.data.replace(tzinfo=None) < timedelta(hours=12):
+                    hora = str(leitura.data.hour) + ":" + str(leitura.data.minute)
+                    tensaoB.append(GraphDTO(hora, leitura.valor, inversor.nome, 'COLORS[contColor]'))
+
+        if 'Tensão C' in par.nome:
+            leituras = dao.get_leituras_by_param(Leitura_H, par.id)
+            for leitura in leituras:
+                if datetime.now() - leitura.data.replace(tzinfo=None) < timedelta(hours=12):
+                    hora = str(leitura.data.hour) + ":" + str(leitura.data.minute)
+                    tensaoC.append(GraphDTO(hora, leitura.valor, inversor.nome, 'COLORS[contColor]'))
+
+        if 'fator_potencia' in par.nome:
+            leituras = dao.get_leituras_by_param(Leitura_H, par.id)
+            for leitura in leituras:
+                if datetime.now() - leitura.data.replace(tzinfo=None) < timedelta(hours=12):
+                    hora = str(leitura.data.hour) + ":" + str(leitura.data.minute)
+                    fator_potencia.append(GraphDTO(hora, leitura.valor, inversor.nome, 'COLORS[contColor]'))
+
+        if 'Tensão_DC' in par.nome:
+            leituras = dao.get_leituras_by_param(Leitura_H, par.id)
+            for leitura in leituras:
+                if datetime.now() - leitura.data.replace(tzinfo=None) < timedelta(hours=12):
+                    hora = str(leitura.data.hour) + ":" + str(leitura.data.minute)
+                    Tensao_DC.append(GraphDTO(hora, leitura.valor, inversor.nome, 'COLORS[contColor]'))
+
+
+
         if 'geracao_dia' in par.nome:
             valorDia += dao.get_last_leitura_by_param(Leitura_H, par.id).valor
         if 'geracao_mes' in par.nome:
@@ -267,10 +564,21 @@ def visualizar_equipamento(request, id_usina, id_equipamento):
         "totalAno": valorAno,
         "potencia": valorPotencia,
         "valorFrequencia": valorFrequencia,
-        "horasHoje": horasHoje
+        "horasHoje": horasHoje,
+        "potenciaGraph" : potenciaGraph,
+        "potenciaRedeGraph": potenciaRedeGraph,
+        "temperaturaGraph": temperaturaGraph,
+        "correnteDc1": correnteDc1,
+        "correnteDc2": correnteDc2,
+        "correnteDc3": correnteDc3,
+        "fator_potencia": fator_potencia,
+        "Tensao_DC": Tensao_DC,
+        "tensaoA": tensaoA,
+        "tensaoB": tensaoB,
+        "tensaoC": tensaoC
+
     }
     return render(request, 'SimpleBuy/visualizar-equipamento.html', context)
-
 
 def performance(request):
     localidade = ""
@@ -279,9 +587,6 @@ def performance(request):
         "localidade": localidade
     }
     return render(request, 'SimpleBuy/performance.html', context)
-
-
-
 
 def cadastrar_usina(request):
 
@@ -316,7 +621,6 @@ def cadastrar_usina(request):
     }
     return render(request, 'SimpleBuy/cadastrar-localidade.html', context)
 
-
 def cadastrar_inversor(request):
     dao = GenericDao()
     localidades = dao.selectAll(Localidade)
@@ -348,7 +652,6 @@ def cadastrar_inversor(request):
 
     return render(request, 'SimpleBuy/cadastrar_inversores.html', context)
 
-
 def lista_inversores(request):
     dao = GenericDao()
 
@@ -359,7 +662,6 @@ def lista_inversores(request):
     }
 
     return render(request, 'SimpleBuy/lista_inversores.html', context)
-
 
 def info_inversor(request, inversor_id, parametro_id=None, att=""):
     dao = GenericDao()
@@ -445,7 +747,6 @@ def info_inversor(request, inversor_id, parametro_id=None, att=""):
     }
 
     return render(request, 'SimpleBuy/info_inversor.html', context)
-
 
 def tensao_x_x(parametros, leituras_list, time_list):
 

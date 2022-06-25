@@ -76,13 +76,13 @@
     justify-content: center;
 }
 
-img{
-    height: 90%;
-    width: 90%;
+.bt-container{
+    display: flex;
+    justify-content: space-between;
+    padding: 1px;
+    width: 50%;
+
 }
-
-
-
 
 .equipments-list-table{
     margin-top: 2%;
